@@ -13,6 +13,12 @@ const getUsers = async (req, res) => {
     res.status(200).json(response.rows);
 };
 
+const getUsersbyid = async (req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('SELECT * FROM clientes WHERE id = $1', [id]);
+    res.json(response.rows);
+};
+
 const createUser = async ( req, res) => {
     const { nombre , email , telefono , direccion}= req.body;
     
@@ -26,7 +32,17 @@ const createUser = async ( req, res) => {
     })
 };
 
+const deleteUser = async ( req, res) => {
+    const id = req.params.id;
+    const response = await pool.query('DELETE FROM clientes WHERE id = $1', [id]);
+    console.log(response);
+    res.json(`USER ${id} deleted succesfully`);
+};
+
+
 module.exports= {
     getUsers,
-    createUser
+    getUsersbyid,
+    createUser,
+    deleteUser
 }
